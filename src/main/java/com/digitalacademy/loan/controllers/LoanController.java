@@ -8,16 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-
 import com.digitalacademy.loan.constants.LoanError;
 import com.digitalacademy.loan.constants.Response;
-import com.digitalacademy.loan.exception.LoanException;
-import com.digitalacademy.loan.model.LoanInfo;
-import com.digitalacademy.loan.model.ResponseModel;
-import com.digitalacademy.loan.model.StatusModel;
-import com.digitalacademy.loan.service.LoanService;
-import java.util.Map;
-import java.util.List;
+import com.digitalacademy.loan.exceptions.LoanException;
+import com.digitalacademy.loan.models.LoanInfo;
+import com.digitalacademy.loan.models.ResponseModel;
+import com.digitalacademy.loan.models.StatusModel;
+import com.digitalacademy.loan.services.LoanService;
 
 @RestController
 @RequestMapping(path = "loan")
@@ -26,6 +23,8 @@ public class LoanController {
 
   @Autowired
   private LoanService loanService;
+
+  // public LoanController(LoanService loanServive) { }
 
   @GetMapping("/info/{id}")
   public HttpEntity<ResponseModel> getLongInfoByCustomerId(@PathVariable Long id) 
@@ -36,6 +35,7 @@ public class LoanController {
         loanInfo.getId(),
         loanInfo.getStatus()
       );
+
       StatusModel status = new StatusModel(
         Response.SUCCESS_CODE.getContent(),
         Response.SUCCESS.getContent()

@@ -1,10 +1,9 @@
-package com.digitalacademy.loans.services;
+package com.digitalacademy.loan.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.digitalacademy.loan.exception.LoanException;
-import com.digitalacademy.loan.model.LoanInfo;
+import com.digitalacademy.loan.exceptions.LoanException;
+import com.digitalacademy.loan.models.LoanInfo;
 import com.digitalacademy.loan.services.LoanService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,9 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class LoanServiceTest {
 
@@ -37,7 +34,7 @@ public class LoanServiceTest {
     assertEquals("OK", resp.getStatus());
     assertEquals("102-444-6666", resp.getAccountPayable());
     assertEquals("102-333-6666", resp.getAccountReceivable());
-    // assertEquals(2000.00, resp.getPrincipalAmount());
+    assertEquals("2000.0", resp.getPrincipalAmount().toString());
   }
 
   @DisplayName("Test get loan info by id equls 2 should throws error")
@@ -50,8 +47,8 @@ public class LoanServiceTest {
       "Expected loanInfoById(reqParam) to throw, but it didn't"
     );
 
-    assertEquals(400, thrown.getHttpStatus());
-    assertEquals("loan4002", thrown.getLoanError().getCode());
+    assertEquals(400, thrown.getHttpStatus().value());
+    assertEquals("LOAN4002", thrown.getLoanError().getCode());
     assertEquals("Loan infomation not found", thrown.getLoanError().getMessage());
   }
 

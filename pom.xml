@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -17,6 +18,10 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+		<junit.jupiter.version>5.5.2</junit.jupiter.version>
+		<junit.platform.version>1.5.2</junit.platform.version>
 	</properties>
 
 	<dependencies>
@@ -32,44 +37,23 @@
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
-						<groupId>junit</groupId>
-						<artifactId>junit</artifactId>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		
-		<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>5.3.2</version>
-				<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<version>5.3.2</version>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.3.2</version>
+			<version>${junit.jupiter.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.4.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-commons</artifactId>
-			<version>1.4.0</version>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>${junit.platform.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -105,7 +89,6 @@
 			<artifactId>log4j-core</artifactId>
 			<version>2.6.1</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -123,8 +106,9 @@
 					<destFile>${basedir}/target/converage-reports/jacoco-unit.exec</destFile>
 					<dataFile>${basedir}/target/converage-reports/jacoco-unit.exec</dataFile>
 					<excludes>
-						<exclude>com/digitalacademy/loan/loanApplication</exclude>
-						<exclude>com/digitalacademy/loan/modal/**</exclude>
+						<exclude>com/digitalacademy/loan/loanApplication*</exclude>
+						<exclude>com/digitalacademy/loan/interceptor/**</exclude>
+						<exclude>com/digitalacademy/loan/modals/**</exclude>
 						<exclude>com/digitalacademy/loan/constants/**</exclude>
 					</excludes>
 				</configuration>
@@ -144,16 +128,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-					<skipTests>false</skipTests>
-					<testFailureIgnore>true</testFailureIgnore>
-					<forkMode>once</forkMode>
-        </configuration>
-			</plugin> 
 		</plugins>
   </build>
 
