@@ -24,7 +24,7 @@ public class LoanController {
   @Autowired
   private LoanService loanService;
 
-  public LoanController(LoanService loanServive) { }
+  // public LoanController(LoanService loanServive) { }
 
   @GetMapping("/info/{id}")
   public HttpEntity<ResponseModel> getLongInfoByCustomerId(@PathVariable Long id) 

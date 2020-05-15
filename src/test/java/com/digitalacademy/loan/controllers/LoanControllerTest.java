@@ -51,91 +51,81 @@ public class LoanControllerTest {
   @Autowired
   ObjectMapper objectMapper;
 
-  private MockMvc mvc;
-
-  @BeforeEach
-  public void setUp() {
-    MockitoAnnotations.initMocks(this);
-    loanController = new LoanController(loanServive);
-    mvc = MockMvcBuilders.standaloneSetup(loanController)
-                         .build();
-  }
+  @Autowired
+  MockMvc mvc;
 
   @DisplayName("Test get loan by id 1")
   @Test
   void testGetLoanInfoByCustomerIdEquals1() throws Exception {
-    Long reqParam = 1L;
+    Long id = 1L;
     LoanInfo loanInfo = new LoanInfo();
-    loanInfo.setId(1L);
+    loanInfo.setId(id);
     loanInfo.setStatus("OK");
     loanInfo.setAccountPayable("102-444-6666");
     loanInfo.setAccountReceivable("102-333-6666");
     loanInfo.setPrincipalAmount(2000.00);
 
-    when(loanServive.getloanInfoById(reqParam)).thenReturn(loanInfo);
+    when(loanServive.getloanInfoById(id)).thenReturn(loanInfo);
 
-    ResultActions result = mvc.perform(
-      get("/loan/info/" + reqParam).contentType(MediaType.APPLICATION_JSON)
-                                   .content(objectMapper.writeValueAsBytes(loanInfo))
-    );
+    MvcResult mvcResult = mvc.perform(get("/loan/info/{id}", id))
+                             .andExpect(status().isOk())
+                             .andReturn();
                              
-    result.andExpect(status().isOk());
-    // JSONObject resp = new JSONObject(mvcResult.getResponse().getContentAsString());
-    // JSONObject status = new JSONObject(resp.getString("status"));
-    // JSONObject data = new JSONObject(resp.getString("data"));
+    JSONObject resp = new JSONObject(mvcResult.getResponse().getContentAsString());
+    JSONObject status = new JSONObject(resp.getString("status"));
+    JSONObject data = new JSONObject(resp.getString("data"));
 
-    // assertEquals("0", status.get("code").toString());
-    // assertEquals("success", status.get("message").toString());
+    assertEquals("0", status.get("code").toString());
+    assertEquals("success", status.get("message").toString());
 
-    // assertEquals("1", data.get("id"));
-    // assertEquals("OK", data.get("status"));
-    // assertEquals("102-444-6666", data.get("account_payable"));
-    // assertEquals("102-333-6666", data.get("account_receivable"));
-    // assertEquals(2000.00, data.get("principal_amount"));
+    assertEquals(1, data.get("id"));
+    assertEquals("OK", data.get("status"));
+    assertEquals("102-444-6666", data.get("account_payable"));
+    assertEquals("102-333-6666", data.get("account_receivable"));
+    assertEquals(2000, data.get("principal_amount"));
 
-    verify(loanServive, times(1)).getloanInfoById(reqParam);
+    verify(loanServive, times(1)).getloanInfoById(id);
   }
 
   @DisplayName("Test get loan by id 2 and throws error")
   @Test
   void testGetLoanInfoByCustomerIdEquals2() throws Exception {
-    Long reqParam = 2L;
+    Long id = 2L;
 
-    when(loanServive.getloanInfoById(reqParam)).thenThrow(
+    when(loanServive.getloanInfoById(id)).thenThrow(
       new LoanException(LoanError.GET_LOAN_NOT_FOUND, HttpStatus.BAD_REQUEST)
     );
 
-    MvcResult mvcResult = mvc.perform(get("/loan/info/" + reqParam))
-                             .andExpect(status().isNotFound())
-                             .andReturn();
-
-    JSONObject resp = new JSONObject(mvcResult.getResponse().getContentAsString());
-    // JSONObject status = new JSONObject(resp.getString("status"));
-
-    // assertEquals("LOAN4002", status.get("code").toString());
-    // assertEquals("Loan infomation not found", status.get("message").toString());
-
-    // verify(loanServive, times(1)).getloanInfoById(reqParam);
-  }
-
-  @DisplayName("Test get loan by id 3 and throws error")
-  @Test
-  void testGetLoanInfoByCustomerIdEquals3() throws Exception {
-    Long reqParam = 3L;
-    when(loanServive.getloanInfoById(reqParam)).thenThrow(
-      new Exception("Error Exception")
-    );
-
-    MvcResult mvcResult = mvc.perform(get("/loan/info/" + reqParam))
-                             .andExpect(status().isInternalServerError())
+    MvcResult mvcResult = mvc.perform(get("/loan/info/{id}", id))
+                             .andExpect(status().isBadRequest())
                              .andReturn();
 
     JSONObject resp = new JSONObject(mvcResult.getResponse().getContentAsString());
     JSONObject status = new JSONObject(resp.getString("status"));
 
-    assertEquals("LOAN4001", status.get("code").toString());
-    assertEquals("Cannot get loan infomation", status.get("message").toString());
+    assertEquals("LOAN4002", status.get("code").toString());
+    assertEquals("Loan infomation not found", status.get("message").toString());
+  }
 
-    verify(loanServive, times(1)).getloanInfoById(reqParam);
+  @DisplayName("Test get loan by id 3 and throws error")
+  @Test
+  void testGetLoanInfoByCustomerIdEquals3() throws Exception {
+    Long id = 3L;
+
+    when(loanServive.getloanInfoById(id)).thenThrow(
+      new Exception("Error Exception")
+    );
+
+    mvc.perform(get("/loan/info/{id}", id))
+       .andExpect(status().isInternalServerError())
+       .andExpect(content().contentType("application/json"))
+       .andExpect(jsonPath("$.status.code").value("LOAN4001"))
+       .andExpect(jsonPath("$.status.message").value("Cannot get loan infomation"));
+
+    // JSONObject resp = new JSONObject(mvcResult.getResponse().getContentAsString());
+    // JSONObject status = new JSONObject(resp.getString("status"));
+
+    // assertEquals("LOAN4001", status.get("code").toString());
+    // assertEquals("Cannot get loan infomation", status.get("message").toString());
   }
 }

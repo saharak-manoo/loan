@@ -64,11 +64,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.2</version>
-		</dependency> -->
+		</dependency>
 
 		<!-- Util -->
 		<dependency>
@@ -97,28 +97,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<!-- attached to Maven test phase -->
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- Unit test report with jacoco -->
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.2</version>
@@ -126,8 +106,9 @@
 					<destFile>${basedir}/target/converage-reports/jacoco-unit.exec</destFile>
 					<dataFile>${basedir}/target/converage-reports/jacoco-unit.exec</dataFile>
 					<excludes>
-						<exclude>com/digitalacademy/loan/loanApplication</exclude>
-						<exclude>com/digitalacademy/loan/modal/**</exclude>
+						<exclude>com/digitalacademy/loan/loanApplication*</exclude>
+						<exclude>com/digitalacademy/loan/interceptor/**</exclude>
+						<exclude>com/digitalacademy/loan/modals/**</exclude>
 						<exclude>com/digitalacademy/loan/constants/**</exclude>
 					</excludes>
 				</configuration>
@@ -146,7 +127,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
   </build>
 
