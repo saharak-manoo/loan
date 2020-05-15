@@ -15,8 +15,6 @@ import com.digitalacademy.loan.models.LoanInfo;
 import com.digitalacademy.loan.models.ResponseModel;
 import com.digitalacademy.loan.models.StatusModel;
 import com.digitalacademy.loan.services.LoanService;
-import java.util.Map;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "loan")
@@ -25,6 +23,8 @@ public class LoanController {
 
   @Autowired
   private LoanService loanService;
+
+  public LoanController(LoanService loanServive) { }
 
   @GetMapping("/info/{id}")
   public HttpEntity<ResponseModel> getLongInfoByCustomerId(@PathVariable Long id) 
@@ -35,6 +35,7 @@ public class LoanController {
         loanInfo.getId(),
         loanInfo.getStatus()
       );
+
       StatusModel status = new StatusModel(
         Response.SUCCESS_CODE.getContent(),
         Response.SUCCESS.getContent()

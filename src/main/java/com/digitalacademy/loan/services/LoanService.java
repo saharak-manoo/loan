@@ -1,12 +1,8 @@
 package com.digitalacademy.loan.services;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.digitalacademy.loan.constants.LoanError;
-import com.digitalacademy.loan.constants.Response;
 import com.digitalacademy.loan.exceptions.LoanException;
 import com.digitalacademy.loan.models.LoanInfo;
-import com.digitalacademy.loan.models.StatusModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;

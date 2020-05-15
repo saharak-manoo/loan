@@ -34,7 +34,7 @@ public class LoanServiceTest {
     assertEquals("OK", resp.getStatus());
     assertEquals("102-444-6666", resp.getAccountPayable());
     assertEquals("102-333-6666", resp.getAccountReceivable());
-    assertEquals("2000.00", resp.getPrincipalAmount().toString());
+    assertEquals("2000.0", resp.getPrincipalAmount().toString());
   }
 
   @DisplayName("Test get loan info by id equls 2 should throws error")
@@ -47,8 +47,8 @@ public class LoanServiceTest {
       "Expected loanInfoById(reqParam) to throw, but it didn't"
     );
 
-    assertEquals(400, thrown.getHttpStatus());
-    assertEquals("loan4002", thrown.getLoanError().getCode());
+    assertEquals(400, thrown.getHttpStatus().value());
+    assertEquals("LOAN4002", thrown.getLoanError().getCode());
     assertEquals("Loan infomation not found", thrown.getLoanError().getMessage());
   }
 
