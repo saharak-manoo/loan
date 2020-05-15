@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum LoanError {
-  GET_LOAN_INFO_EXCEPTION("loan4001", "Cannot get loan infomation"),
-  GET_LOAN_NOT_FOUND("loan4002", "Loan infomation not found");
+  GET_LOAN_INFO_EXCEPTION("LOAN4001", "Cannot get loan infomation"),
+  GET_LOAN_NOT_FOUND("LOAN4002", "Loan infomation not found");
   
   private String code;
   private String message;

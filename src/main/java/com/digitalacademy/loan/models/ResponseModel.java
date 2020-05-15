@@ -1,4 +1,4 @@
-package com.digitalacademy.loan.model;
+package com.digitalacademy.loan.models;
 
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
